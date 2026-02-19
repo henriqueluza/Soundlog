@@ -1,6 +1,9 @@
 import motor.motor_asyncio
 import os
 
+from dotenv import load_dotenv
+load_dotenv()
+
 url = os.getenv("MONGODB_URL")
 name = os.getenv("MONGO_DB_NAME")
 

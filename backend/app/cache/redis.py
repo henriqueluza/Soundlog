@@ -1,7 +1,10 @@
-from os import getenv
+import os
 import redis.asyncio
 
-url = getenv("REDIS_URL")
+from dotenv import load_dotenv
+load_dotenv()
+
+url = os.getenv("REDIS_URL")
 
 client = redis.asyncio.from_url(url)
 

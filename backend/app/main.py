@@ -1,8 +1,20 @@
 import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from contextlib import asynccontextmanager
+from app.db.mongodb import connect_db, close_db
+from app.cache.redis import connect_redis, close_redis
+
+@asynccontextmanager
+async def lifespan(app):
+    await connect_db()
+    await connect_redis()
+    yield
+    await close_db()
+    await close_redis()
 
 app = FastAPI(
+    lifespan=lifespan,
     title="soundlog",
     version="0.1.0",
     description="API do Soundlog - plataforma social de música"
@@ -19,3 +31,4 @@ app.add_middleware(
 @app.get("/health")
 def get_health():
     return {"status": "ok"}
+
