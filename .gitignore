@@ -1,0 +1,33 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+*.egg-info/
+
+# Variáveis de ambiente
+.env
+.env.*
+
+# PyCharm
+.idea/
+
+# Node / React
+node_modules/
+dist/
+build/
+
+# Docker
+*.log
+
+# macOS
+.DS_Store
+
+# ML
+*.pkl
+*.pt
+mlruns/
+
+# MongoDB
+data/db/
