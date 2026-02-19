@@ -11,7 +11,7 @@ venv/
 .env.*
 
 # PyCharm
-.idea/
+.idea
 
 # Node / React
 node_modules/
