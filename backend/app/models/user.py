@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from datetime import datetime
 
 class UserBase(BaseModel):
     username: str
@@ -9,5 +10,14 @@ class UserCreate(UserBase):
 
 class UserInDB(UserBase):
     password_hash: str
-class User(UserInDB):
-    pass
+    created_at: datetime
+    followers: list = []
+    following: list = []
+    favorite_genres: list = []
+    onboarding_complete: bool = False
+
+class UserResponse(UserBase):
+    followers: list = []
+    following: list = []
+    favorite_genres: list = []
+    created_at: datetime
