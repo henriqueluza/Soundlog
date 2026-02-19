@@ -2,7 +2,10 @@ import os
 import redis.asyncio
 
 from dotenv import load_dotenv
-load_dotenv()
+from pathlib import Path
+import os
+
+load_dotenv("/Users/henriqueluza/Coding/Projeto Soundlog/.env")
 
 url = os.getenv("REDIS_URL")
 

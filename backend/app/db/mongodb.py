@@ -1,10 +1,11 @@
 import motor.motor_asyncio
+from dotenv import load_dotenv
+from pathlib import Path
 import os
 
-from dotenv import load_dotenv
-load_dotenv()
+load_dotenv("/Users/henriqueluza/Coding/Projeto Soundlog/.env")
 
-url = os.getenv("MONGODB_URL")
+url = os.getenv("MONGO_URL")
 name = os.getenv("MONGO_DB_NAME")
 
 client = motor.motor_asyncio.AsyncIOMotorClient(url)
