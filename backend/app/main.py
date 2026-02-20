@@ -1,10 +1,12 @@
 import os
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 from app.db.mongodb import connect_db, close_db
 from app.cache.redis import connect_redis, close_redis
 from app.api.routers.auth import router as auth_router
+from app.utils import get_current_user
+
 
 @asynccontextmanager
 async def lifespan(app):
@@ -32,6 +34,6 @@ app.add_middleware(
 app.include_router(auth_router)
 
 @app.get("/health")
-def get_health():
-    return {"status": "ok"}
+def get_health(current_user: str = Depends(get_current_user)):
+    return {"status": "ok", "user": current_user}
 
