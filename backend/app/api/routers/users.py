@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 from app.db.mongodb import db
-from app.models.user import UserResponse
+from app.models.user import UserResponse, UserPublicResponse
 from app.utils import get_current_user, hash_password, verify_passwords
 
 router = APIRouter(prefix="users", tags=["users"])
