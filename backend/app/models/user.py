@@ -34,3 +34,8 @@ class LoginRequest(BaseModel):
     username: Optional[str] = None
     email: Optional[str] = None
     password: str
+
+class UserUpdate(BaseModel):
+    username: Optional[str] = None
+    email: Optional[str] = None
+    avatar_url: Optional[str] = None
