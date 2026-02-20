@@ -17,7 +17,7 @@ async def register(user: UserCreate):
     existing_email = await db["users"].find_one({"email": user.email})
 
     if existing_user is not None or existing_email is not None:
-        raise HTTPException(status_code=400, detail="Usuário já existe")
+        raise HTTPException(status_code=400, detail="Usuário já existe.")
 
     hashed_password = hash_password(user.password)
 
@@ -38,3 +38,22 @@ async def register(user: UserCreate):
         favorite_genres=new_user.favorite_genres,
         created_at=new_user.created_at
     )
+
+@router.post("/login")
+async def login(user: LoginRequest):
+    if user.username is not None:
+        found_user = await db["users"].find_one({"username": user.username})
+    else:
+        found_user = await db["users"].find_one({"email": user.email})
+
+    if found_user is None:
+        raise HTTPException(status_code=401, detail="Usuário não encontrado.")
+
+    if not verify_password(user.password, found_user["password_hash"]):
+        raise HTTPException(status_code=401, detail="Senha incorreta.")
+
+    access_token = create_access_token({"sub": found_user["username"]})
+
+    return TokenResponse(access_token=access_token)
+
+
