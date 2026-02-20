@@ -1,5 +1,6 @@
 from pydantic import BaseModel
 from datetime import datetime
+from typing import Optional
 
 class UserBase(BaseModel):
     username: str
@@ -21,3 +22,8 @@ class UserResponse(UserBase):
     following: list = []
     favorite_genres: list = []
     created_at: datetime
+
+class LoginRequest(BaseModel):
+    username: Optional[str] = None
+    email: Optional[str] = None
+    password: str
