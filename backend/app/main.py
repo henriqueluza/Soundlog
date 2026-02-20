@@ -7,7 +7,9 @@ from app.cache.redis import connect_redis, close_redis
 from app.api.routers.auth import router as auth_router
 from app.utils import get_current_user
 from app.api.routers.users import router as users_router
+from fastapi.security import HTTPBearer
 
+security = HTTPBearer()
 
 @asynccontextmanager
 async def lifespan(app):
@@ -21,7 +23,8 @@ app = FastAPI(
     lifespan=lifespan,
     title="soundlog",
     version="0.1.0",
-    description="API do Soundlog - plataforma social de música"
+    description="API do Soundlog - plataforma social de música",
+    swagger_ui_parameters={"persistAuthorization": True}
 )
 
 app.add_middleware(
