@@ -10,7 +10,7 @@ async def get_profile(username: str):
     existing_user = await db.users.find_one({"username": username})
     if existing_user is None:
         raise HTTPException(status_code=404, detail="Usuário não encontrado")
-    return UserResponse(
+    return UserPublicResponse(
         username=existing_user["username"],
         followers=existing_user["followers"],
         following=existing_user["following"],
