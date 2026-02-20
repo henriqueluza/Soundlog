@@ -18,7 +18,9 @@ async def get_profile(username: str):
         created_at=existing_user["created_at"],
     )
 
-# @router.put()
+@router.put("/{username")
+async def update_profile():
+
 #
 # @router.put()
 #
