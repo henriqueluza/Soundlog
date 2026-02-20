@@ -76,3 +76,46 @@ async def delete_password(username: str, user_data: UserDelete, current_user: st
     await db["users"].delete_one({"username": username})
 
     return {"detail": "Conta apagada. Te vemos na próxima!"}
+
+@router.post("/{username}/follow")
+async def follow_user(username: str, current_user: str = Depends(get_current_user)):
+    if current_user == username:
+        raise HTTPException(status_code=400, detail="Você não pode seguir a si mesmo.")
+
+    found_user = await db["users"].find_one({"username": current_user})
+    if username in found_user["following"]:
+        raise HTTPException(status_code=400, detail="Você já segue este usuário.")
+
+    await db["users"].update_one(
+        {"username": current_user},
+        {"$push": {"following": username}}
+    )
+
+    await db["users"].update_one(
+        {"username": username},
+        {"$push": {"followers": current_user}}
+    )
+
+    return {"detail": f"Você agora está seguindo {username}!"}
+
+@router.delete("/{username}/unfollow")
+async def unfollow_user(username: str, current_user: str = Depends(get_current_user)):
+
+    if current_user == username:
+        raise HTTPException(status_code=400, detail="Você não pode seguir a si mesmo.")
+
+    found_user = await db["users"].find_one({"username": current_user})
+    if username not in found_user["following"]:
+        raise HTTPException(status_code=400, detail="Você já não segue este usuário.")
+
+    await db["users"].update_one(
+        {"username": current_user},
+        {"$pull": {"following": username}}
+    )
+
+    await db["users"].update_one(
+        {"username": username},
+        {"$pull": {"followers": current_user}}
+    )
+
+    return {"detail": f"Você não está mais seguindo {username}!"}
