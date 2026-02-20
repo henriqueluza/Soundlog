@@ -24,7 +24,7 @@ class UserResponse(UserBase):
     created_at: datetime
 
 class UserPublicResponse(BaseModel):
-    username=str
+    username: str
     followers: list = []
     following: list = []
     favorite_genres: list = []

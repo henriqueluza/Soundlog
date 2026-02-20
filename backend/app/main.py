@@ -6,6 +6,7 @@ from app.db.mongodb import connect_db, close_db
 from app.cache.redis import connect_redis, close_redis
 from app.api.routers.auth import router as auth_router
 from app.utils import get_current_user
+from app.api.routers.users import router as users_router
 
 
 @asynccontextmanager
@@ -32,6 +33,8 @@ app.add_middleware(
 )
 
 app.include_router(auth_router)
+
+app.include_router(users_router)
 
 @app.get("/health")
 def get_health():

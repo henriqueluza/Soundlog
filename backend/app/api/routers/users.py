@@ -1,9 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException
 from app.db.mongodb import db
 from app.models.user import UserResponse, UserPublicResponse
-from app.utils import get_current_user, hash_password, verify_passwords
+from app.utils import get_current_user, hash_password, verify_password
 
-router = APIRouter(prefix="users", tags=["users"])
+router = APIRouter(prefix="/users", tags=["users"])
 
 @router.get("/{username}/profile")
 async def get_profile(username: str):
