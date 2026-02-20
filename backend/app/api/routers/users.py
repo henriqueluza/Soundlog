@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 from app.db.mongodb import db
-from app.models.user import UserResponse, UserPublicResponse, UserUpdate
+from app.models.user import UserResponse, UserPublicResponse, UserUpdate, UserUpdatePassword, UserDelete
 from app.utils import get_current_user, hash_password, verify_password
 
 router = APIRouter(prefix="/users", tags=["users"])
@@ -43,6 +43,36 @@ async def update_profile(username: str, user_data: UserUpdate, current_user: str
 
     )
 
-# @router.put()
-#
-# @router.delete()
+@router.put("/{username}/password")
+async def update_password(username: str, user_data: UserUpdatePassword, current_user: str = Depends(get_current_user)):
+    if current_user != username:
+        raise HTTPException(status_code=403, detail="Sem permissão.")
+
+    found_user = await db["users"].find_one({"username": username})
+    if found_user is None:
+        raise HTTPException(status_code=404, detail="Usuário não encontrado.")
+
+    if not verify_password(user_data.current_password, found_user["password_hash"]):
+        raise HTTPException(status_code=401, detail="Senha atual incorreta.")
+
+    new_hash = hash_password(user_data.new_password)
+    await db["users"].update_one({"username": username}, {"$set": {"password_hash": new_hash}})
+
+    return {"detail": "Senha atualizada com sucesso!"}
+
+
+@router.delete("/{username}")
+async def delete_password(username: str, user_data: UserDelete, current_user: str = Depends(get_current_user)):
+    if current_user != username:
+        raise HTTPException(status_code=403, detail="Sem permissão.")
+
+    found_user = await db["users"].find_one({"username": username})
+    if found_user is None:
+        raise HTTPException(status_code=404, detail="Usuário não encontrado.")
+
+    if not verify_password(user_data.password, found_user["password_hash"]):
+        raise HTTPException(status_code=401, detail="Senha atual incorreta.")
+
+    await db["users"].delete_one({"username": username})
+
+    return {"detail": "Conta apagada. Te vemos na próxima!"}
