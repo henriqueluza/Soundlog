@@ -23,6 +23,13 @@ class UserResponse(UserBase):
     favorite_genres: list = []
     created_at: datetime
 
+class UserPublicResponse(BaseModel):
+    username=str
+    followers: list = []
+    following: list = []
+    favorite_genres: list = []
+    created_at: datetime
+
 class LoginRequest(BaseModel):
     username: Optional[str] = None
     email: Optional[str] = None
