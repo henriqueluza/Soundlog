@@ -98,7 +98,7 @@ async def follow_user(username: str, current_user: str = Depends(get_current_use
 
     return {"detail": f"Você agora está seguindo {username}!"}
 
-@router.delete("/{username}/unfollow")
+@router.delete("/{username}/follow")
 async def unfollow_user(username: str, current_user: str = Depends(get_current_user)):
 
     if current_user == username:
