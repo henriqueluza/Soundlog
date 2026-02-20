@@ -3,6 +3,10 @@ from jose import jwt
 from datetime import datetime, timedelta
 import os
 from dotenv import load_dotenv
+from fastapi import HTTPException, Depends
+from fastapi.security import OAuth2PasswordBearer
+
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
 
 load_dotenv("/Users/henriqueluza/Coding/Projeto Soundlog/.env")
 
@@ -25,3 +29,10 @@ def create_access_token(data: dict):
     expire = datetime.utcnow() + timedelta(minutes=30)
     data["exp"] = expire
     return jwt.encode(data, key = SECRET_KEY, algorithm=ALGORITHM)
+
+async def get_current_user(token: str = Depends(oauth2_scheme)):
+    payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+    username: str = payload.get("sub")
+    if username is None:
+        raise HTTPException(status_code=401, detail="Incorrect username or password")
+    return username
