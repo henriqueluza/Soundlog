@@ -1,5 +1,5 @@
 import os
-from fastapi import FastAPI, Depends, HTTPException
+from fastapi import FastAPI, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 from app.db.mongodb import connect_db, close_db
@@ -34,6 +34,6 @@ app.add_middleware(
 app.include_router(auth_router)
 
 @app.get("/health")
-def get_health(current_user: str = Depends(get_current_user)):
-    return {"status": "ok", "user": current_user}
+def get_health():
+    return {"status": "ok"}
 
