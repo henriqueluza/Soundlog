@@ -40,3 +40,7 @@ class UserUpdate(BaseModel):
     username: Optional[str] = None
     email: Optional[str] = None
     avatar_url: Optional[str] = None
+
+class UserUpdatePassword(BaseModel):
+    current_password: str
+    new_password: str
