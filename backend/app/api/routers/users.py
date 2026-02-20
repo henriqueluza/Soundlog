@@ -1,10 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException
 from app.db.mongodb import db
-from app.models.user import UserResponse, UserPublicResponse
-from app.utils import get_current_user, hash_password, verify_password, UserUpdate
-from fastapi.security import OAuth2PasswordBearer
-
-from backend.app.utils import oauth2_scheme
+from app.models.user import UserResponse, UserPublicResponse, UserUpdate
+from app.utils import get_current_user, hash_password, verify_password
 
 router = APIRouter(prefix="/users", tags=["users"])
 
@@ -42,6 +39,7 @@ async def update_profile(username: str, user_data: UserUpdate, current_user: str
         following=updated_user["following"],
         favorite_genres=updated_user["favorite_genres"],
         created_at=updated_user["created_at"],
+        avatar_url=updated_user["avatar_url"],
 
     )
 

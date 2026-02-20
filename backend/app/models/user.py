@@ -22,6 +22,7 @@ class UserResponse(UserBase):
     following: list = []
     favorite_genres: list = []
     created_at: datetime
+    avatar_url: Optional[str] = None
 
 class UserPublicResponse(BaseModel):
     username: str
