@@ -7,6 +7,13 @@ export default function Login() {
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
 
+    function validatePassword(password: string): string | null {
+        if (password.length < 8) return "Senha deve ter no mínimo 8 caracteres"; // deve ter mais que 8 dígitos
+        if (!/[0-9]/.test(password)) return "Senha deve ter pelo menos um número"; // testa se a função tem um número
+        if (!/[!@#$%^&*]/.test(password)) return "Senha deve ter pelo menos um símbolo"; // testa se ela tem um símbolo
+        return null;
+        }
+
 
     return (
         <div className = "min-h-screen bg-[#030712] flex items-center justify-center overflow-hidden relative">
