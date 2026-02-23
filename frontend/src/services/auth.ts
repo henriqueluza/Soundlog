@@ -1,6 +1,6 @@
 import api from './api'
 
-export async function register(username : string, password: string, email: string) {
+export async function register(username : string, email: string, password: string) {
     const response = await api.post('/auth/register', { username, email, password })
     return response.data // envia os dados de cadastro para o backend
 }
