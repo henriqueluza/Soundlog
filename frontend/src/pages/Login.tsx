@@ -2,6 +2,11 @@ import { useState } from "react";
 
 export default function Login() {
     const [isLogin, setIsLogin] = useState(true); // desestruturação de array
+    const [email, setEmail] = useState("");
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+    const [error, setError] = useState("");
+
 
     return (
         <div className = "min-h-screen bg-[#030712] flex items-center justify-center overflow-hidden relative">
@@ -55,6 +60,8 @@ export default function Login() {
                         type="text"
                         placeholder="Username"
                         className="bg-white/[0.05] border border-white/[0.08] rounded-xl px-5 py-4 text-white placeholder-white/20 outline-none focus:border-emerald-500/50 transition-all"
+                        value={username}
+                        onChange={e => setUsername(e.target.value)}
                     />
 
                     {!isLogin && (
@@ -62,6 +69,8 @@ export default function Login() {
                             type="email"
                             placeholder="E-mail"
                             className="bg-white/[0.05] border border-white/[0.08] rounded-xl px-5 py-4 text-white placeholder-white/20 outline-none focus:border-emerald-500/50 transition-all"
+                            value={email}
+                            onChange={e => setEmail(e.target.value)}
                         />
                     )}
 
@@ -69,6 +78,8 @@ export default function Login() {
                         type="password"
                         placeholder="Senha"
                         className="bg-white/[0.05] border border-white/[0.08] rounded-xl px-5 py-4 text-white placeholder-white/20 outline-none focus:border-emerald-500/50 transition-all"
+                        value={password}
+                        onChange={e => setPassword(e.target.value)}
                     />
 
                     <button className="bg-emerald-500 text-white font-bold py-4 rounded-xl hover:bg-emerald-600 transition-all mt-1">
