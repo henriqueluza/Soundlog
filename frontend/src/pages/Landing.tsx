@@ -31,7 +31,7 @@ export default function Landing() {
                         Entrar
                     </button>
                     <button
-                        onClick={() => navigate('/login')}
+                        onClick={() => navigate('/register')}
                         className="bg-emerald-500 text-white px-6 py-2 rounded-full text-sm font-semibold cursor-pointer hover:bg-emerald-600 transition-all"
                     >
                         Cadastrar grátis
@@ -53,7 +53,7 @@ export default function Landing() {
                     </p>
                     <div className="flex gap-3">
                         <button
-                            onClick={() => navigate('/login')}
+                            onClick={() => navigate('/register')}
                             className="bg-emerald-500 text-white px-7 py-4 rounded-full font-semibold hover:bg-emerald-600 transition-all"
                         >
                             Criar conta grátis
@@ -68,9 +68,9 @@ export default function Landing() {
                 <div className="grid grid-cols-3 gap-3" style={{ transform: 'perspective(800px) rotateY(-8deg) rotateX(4deg)' }}>
                     {[
                         { img: dark_side, title: 'Dark Side', stars: '★★★★★' },
-                        { img: rumours, title: 'Rumours', stars: '★★★★½' },,
-                        { img: kind_of_blue, title: 'Kind of Blue', stars: '★★★★★' },,,
-                        { img: purple_rain, title: 'Purple Rain', stars: '★★★★★' },,
+                        { img: rumours, title: 'Rumours', stars: '★★★★½' },
+                        { img: kind_of_blue, title: 'Kind of Blue', stars: '★★★★★' },
+                        { img: purple_rain, title: 'Purple Rain', stars: '★★★★★' },
                         { img: ok_computer, title: 'OK Computer', stars: '★★★★½' },
                         { img: thriller, title: 'Thriller', stars: '★★★★★' },
                         { img: abbey_road, title: 'Abbey Road', stars: '★★★★★' },
