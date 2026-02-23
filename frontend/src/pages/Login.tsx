@@ -50,7 +50,30 @@ export default function Login() {
                         </button>
                     </div>
 
-                    {/* Campos aqui depois */}
+                    {/* Campos */}
+                    <input
+                        type="text"
+                        placeholder="Username"
+                        className="bg-white/[0.05] border border-white/[0.08] rounded-xl px-5 py-4 text-white placeholder-white/20 outline-none focus:border-emerald-500/50 transition-all"
+                    />
+
+                    {!isLogin && (
+                        <input
+                            type="email"
+                            placeholder="E-mail"
+                            className="bg-white/[0.05] border border-white/[0.08] rounded-xl px-5 py-4 text-white placeholder-white/20 outline-none focus:border-emerald-500/50 transition-all"
+                        />
+                    )}
+
+                    <input
+                        type="password"
+                        placeholder="Senha"
+                        className="bg-white/[0.05] border border-white/[0.08] rounded-xl px-5 py-4 text-white placeholder-white/20 outline-none focus:border-emerald-500/50 transition-all"
+                    />
+
+                    <button className="bg-emerald-500 text-white font-bold py-4 rounded-xl hover:bg-emerald-600 transition-all mt-1">
+                        {isLogin ? 'ENTRAR →' : 'CADASTRAR →'}
+                    </button>
 
                 </div>
             </div>
