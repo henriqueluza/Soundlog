@@ -1,4 +1,5 @@
 import { useState } from "react";
+import {useNavigate} from "react-router-dom"
 import {login, register} from "../services/auth.ts";
 
 export default function Login() {
@@ -7,6 +8,7 @@ export default function Login() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
+    const navigate = useNavigate();
 
     function validatePassword(password: string): string | null {
         if (password.length < 8) return "Senha deve ter no mínimo 8 caracteres"; // deve ter mais que 8 dígitos
@@ -29,7 +31,8 @@ export default function Login() {
                 await login(username, password);
             } else {
                 await register(username, email, password);
-            }
+
+            }navigate('/home')
         }catch {
                 setError("Credenciais inválidas. Tente novamente.")
             }
@@ -88,6 +91,7 @@ export default function Login() {
                         type="text"
                         placeholder="Username"
                         className="bg-white/[0.05] border border-white/[0.08] rounded-xl px-5 py-4 text-white placeholder-white/20 outline-none focus:border-emerald-500/50 transition-all"
+                        autoComplete="username"
                         value={username}
                         onChange={e => setUsername(e.target.value)}
                     />
@@ -97,6 +101,7 @@ export default function Login() {
                             type="email"
                             placeholder="E-mail"
                             className="bg-white/[0.05] border border-white/[0.08] rounded-xl px-5 py-4 text-white placeholder-white/20 outline-none focus:border-emerald-500/50 transition-all"
+                            autoComplete="email"
                             value={email}
                             onChange={e => setEmail(e.target.value)}
                         />
@@ -106,6 +111,7 @@ export default function Login() {
                         type="password"
                         placeholder="Senha"
                         className="bg-white/[0.05] border border-white/[0.08] rounded-xl px-5 py-4 text-white placeholder-white/20 outline-none focus:border-emerald-500/50 transition-all"
+                        autoComplete="new-password"
                         value={password}
                         onChange={e => setPassword(e.target.value)}
                     />
