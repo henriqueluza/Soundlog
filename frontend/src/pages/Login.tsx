@@ -1,4 +1,5 @@
 import { useState } from "react";
+import {login, register} from "../services/auth.ts";
 
 export default function Login() {
     const [isLogin, setIsLogin] = useState(true); // desestruturação de array
@@ -13,7 +14,27 @@ export default function Login() {
         if (!/[!@#$%^&*]/.test(password)) return "Senha deve ter pelo menos um símbolo"; // testa se ela tem um símbolo
         return null;
         }
+    async function handleSubmit() {
+        setError('')
+        if (!isLogin) {
+            const passwordError = validatePassword(password);
+            if (passwordError) {
+                setError(passwordError);
+                return
+            }
+        }
 
+        try {
+            if (isLogin) {
+                await login(username, password);
+            } else {
+                await register(username, email, password);
+            }
+        }catch {
+                setError("Credenciais inválidas. Tente novamente.")
+            }
+
+    }
 
     return (
         <div className = "min-h-screen bg-[#030712] flex items-center justify-center overflow-hidden relative">
@@ -88,8 +109,8 @@ export default function Login() {
                         value={password}
                         onChange={e => setPassword(e.target.value)}
                     />
-
-                    <button className="bg-emerald-500 text-white font-bold py-4 rounded-xl hover:bg-emerald-600 transition-all mt-1">
+                    {error && <p className="text-red-400 text-sm">{error}</p>}
+                    <button onClick={handleSubmit} className="bg-emerald-500 text-white font-bold py-4 rounded-xl hover:bg-emerald-600 transition-all mt-1">
                         {isLogin ? 'ENTRAR →' : 'CADASTRAR →'}
                     </button>
 
