@@ -12,4 +12,15 @@ api.interceptors.request.use((config) => { // função interceptor do axios. É 
     return config
 })
 
+api.interceptors.response.use(
+    response => response,
+    error => {
+        if (error.response?.status === 401) {
+            localStorage.removeItem('token')
+            return location.href='/login'
+        }
+        return Promise.reject(error)
+    }
+)
+
 export default api // exporta a api
