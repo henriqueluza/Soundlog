@@ -1,16 +1,16 @@
 import api from './api'
 
 export async function register(username : string, password: string, email: string) {
-    const response = await api.post('/api/register', { username, email, password })
-    return response.data
+    const response = await api.post('/auth/register', { username, email, password })
+    return response.data // envia os dados de cadastro para o backend
 }
 
 export async function login(username : string, password: string) {
-    const response = await api.post('/api/login', { username, password })
-    localStorage.setItem('token', response.data.access_token)
+    const response = await api.post('/auth/login', { username, password })
+    localStorage.setItem('token', response.data.access_token) // manda dados de login pro backend salva token no formato key:value dentro do localStorage
     return response.data
 }
 
-export async function logout() {
-    localStorage.removeItem('token')
+export function logout() {
+    localStorage.removeItem('token') // remove o token do localStorage, fazendo logout no usuário
 }
