@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, field_validator
 from datetime import datetime
 from typing import Optional
 
@@ -8,6 +8,16 @@ class UserBase(BaseModel):
 
 class UserCreate(UserBase):
     password: str
+
+    @field_validator("password")
+    def validate_password(cls, v): # cls -> referencia à própria classe; v -> valor do campo
+        if len(v) < 8:
+            raise ValueError("Mínimo 8 caracteres")
+        if not any (c.isdigit() for c in v):
+            raise ValueError("Deve ter pelo menos um número")
+        if not any (c in "!@#$%ˆ&*" for c in v):
+            raise ValueError("Deve ter pelo menos um símbolo")
+        return v
 
 class UserInDB(UserBase):
     password_hash: str
