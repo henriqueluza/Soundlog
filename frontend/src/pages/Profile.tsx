@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import {Navigate, useParams} from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import api from "../services/api";
 import type {UserPublicResponse} from "../services/types.ts";
@@ -23,6 +23,14 @@ export default function Profile() {
             }
         );
     }, [username])
+
+    if (isLoading) {
+        return <div>Aguardando...</div>
+    }
+
+    if (profile == null) {
+        return <div> Usuário não encontrado</div>
+    }
     return (
 
     )
