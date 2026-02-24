@@ -41,26 +41,29 @@ async def register(user: UserCreate):
 
 @router.post("/login")
 async def login(user: LoginRequest, response: Response):
+
+    DUMMY_HASH = "$2b$12$KIXoLbMDKomFGZEYdEMnpuLbLqp8vKpDCLv0V6JpKZDm5T7X8kK3e" # hash dummy para proteger o sistema de ataques de timing
+
     if user.username is not None:
         found_user = await db["users"].find_one({"username": user.username})
     else:
         found_user = await db["users"].find_one({"email": user.email})
 
-    if found_user is None:
-        raise HTTPException(status_code=401, detail="Usuário não encontrado.")
+    password_to_check = found_user["password_hash"] if found_user else DUMMY_HASH
+    is_valid = found_user is not None and verify_password(user.password, password_to_check)
 
-    if not verify_password(user.password, found_user["password_hash"]):
-        raise HTTPException(status_code=401, detail="Senha incorreta.")
+    if not is_valid:
+        raise HTTPException(status_code=401, detail="Usuário ou senha incorretos.") # mensagem genérica para evitar que descubram caso uma conta existe
 
-    access_token = create_access_token({"sub": found_user["username"]})
+    access_token = create_access_token({"sub": found_user["username"]}) # cria o token de acesso; sub é uma convenção de subject
 
     response.set_cookie(
-        key="acess_token",
+        key="access_token",
         value=access_token,
         httponly=True,
         secure=False,# alterar quando subir o código
-        samesite="Lax", # proteção contra CSRF
-        max_age=86400 # duração do cookie
+        samesite="lax", # proteção contra CSRF mas ainda permite acesso por links externos tipo email
+        max_age=86400 # duração do cookie - 7 dias
     )
     return {"message": "Login realizado"}
 
