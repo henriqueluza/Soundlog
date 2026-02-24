@@ -68,3 +68,6 @@ def logout(response: Response):
     response.delete_cookie(key="access_token")
 
     return {"message": "Logout realizado!"}
+
+@router.get("/me")
+async def me(response: Response):

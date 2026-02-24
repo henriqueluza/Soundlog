@@ -1,9 +1,10 @@
 from passlib.context import CryptContext
-from jose import jwt
+from jose import jwt, JWTError
 from datetime import datetime, timedelta
 import os
+from app.db.mongodb import db
 from dotenv import load_dotenv
-from fastapi import HTTPException, Depends, Response
+from fastapi import HTTPException, Depends, Request, Response
 from fastapi.security import OAuth2PasswordBearer
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
@@ -30,12 +31,23 @@ def create_access_token(data: dict):
     data["exp"] = expire
     return jwt.encode(data, key = SECRET_KEY, algorithm=ALGORITHM)
 
-async def get_current_user(token: str = Depends(oauth2_scheme)):
-    payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+async def get_current_user(request: Request):
+    token = request.cookies.get("access_token")
+
+    if not token:
+        raise HTTPException(status_code=400, detail="Token inválido ou expirado")
+
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+    except JWTError:
+        raise HTTPException(status_code=401, detail="Token invalido ou expirado")
     username: str = payload.get("sub")
-    if username is None:
-        raise HTTPException(status_code=401, detail="Incorrect username or password")
-    return username
+
+    user = await db["users"].find_one({"username": username})
+
+    if user is None:
+        raise HTTPException(status_code=401, detail="Usuário não encontrado")
+    return user
 
 def set_auth_cookie(response: Response, token: str):
      return response.set_cookie(
