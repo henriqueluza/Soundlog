@@ -13,10 +13,14 @@ router = APIRouter(prefix="/auth", tags=["auth"])
 @router.post("/register")
 async def register(user: UserCreate, response: Response):
 
-    existing_user = await db["users"].find_one({"username": user.username})
-    existing_email = await db["users"].find_one({"email": user.email})
+    existing_user = await db["users"].find_one({
+        "$or": [
+            {"username": user.username},
+            {"email": user.email}
+        ]
+    })
 
-    if existing_user is not None or existing_email is not None:
+    if existing_user:
         raise HTTPException(status_code=400, detail="Usuário já existe.")
 
     hashed_password = hash_password(user.password)
@@ -30,15 +34,11 @@ async def register(user: UserCreate, response: Response):
 
     await db["users"].insert_one(new_user.model_dump())
 
+    access_token = create_access_token({"sub": new_user.username})
 
-    return UserResponse(
-        username=new_user.username,
-        email=new_user.email,
-        followers=new_user.followers,
-        following=new_user.following,
-        favorite_genres=new_user.favorite_genres,
-        created_at=new_user.created_at
-    )
+    set_auth_cookie(response, access_token)
+
+    return {"message": "Cadastro realizado!"}
 
 @router.post("/login")
 async def login(user: LoginRequest, response: Response):
@@ -62,4 +62,9 @@ async def login(user: LoginRequest, response: Response):
 
     return {"message": "Login realizado"}
 
+@router.post("/logout")
+def logout(response: Response):
 
+    response.delete_cookie(key="access_token")
+
+    return {"message": "Logout realizado!"}
