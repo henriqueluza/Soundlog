@@ -2,7 +2,6 @@ import { createContext, useContext, useState, useEffect} from "react";
 import api from "../services/api";
 import type {User, LoginRequest} from "../services/types.ts";
 import { login, logout } from "../services/auth.ts";
-
 interface AuthContextType {
     user: User | null;
     isAuthenticated: boolean;

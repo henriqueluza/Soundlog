@@ -5,6 +5,7 @@ import Register from "./pages/Register";
 import ProtectedRoute from "./components/ProtectedRoute.tsx";
 import Home from "./pages/Home";
 import {AuthProvider} from "./contexts/AuthContext.tsx";
+import Profile from "./pages/Profile";
 
 function App() {
 
@@ -12,6 +13,7 @@ function App() {
       <AuthProvider>
           <BrowserRouter>
               <Routes>
+                  <Route path="/:username/profile" element={<Profile/>}/>
                   <Route path="/login" element={<Login />}/>
                   <Route path="/register" element={<Register />}/>
                   <Route path="/home" element={
