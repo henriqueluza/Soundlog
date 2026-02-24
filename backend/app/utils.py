@@ -47,6 +47,7 @@ async def get_current_user(request: Request):
 
     if user is None:
         raise HTTPException(status_code=401, detail="Usuário não encontrado")
+    user["_id"] = str(user["_id"])
     return user
 
 def set_auth_cookie(response: Response, token: str):
