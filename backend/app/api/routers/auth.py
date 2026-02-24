@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Response
 from app.models.user import UserResponse, UserCreate, UserInDB
 from app.db.mongodb import db
 from app.utils import hash_password
@@ -40,7 +40,7 @@ async def register(user: UserCreate):
     )
 
 @router.post("/login")
-async def login(user: LoginRequest):
+async def login(user: LoginRequest, response: Response):
     if user.username is not None:
         found_user = await db["users"].find_one({"username": user.username})
     else:
@@ -54,6 +54,14 @@ async def login(user: LoginRequest):
 
     access_token = create_access_token({"sub": found_user["username"]})
 
-    return TokenResponse(access_token=access_token)
+    response.set_cookie(
+        key="acess_token",
+        value=access_token,
+        httponly=True,
+        secure=False,# alterar quando subir o código
+        samesite="Lax", # proteção contra CSRF
+        max_age=86400 # duração do cookie
+    )
+    return {"message": "Login realizado"}
 
 
