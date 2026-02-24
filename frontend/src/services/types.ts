@@ -18,3 +18,12 @@ export interface LoginRequest {
     username: string;
     password: string;
 }
+
+export interface UserPublicResponse {
+    username: string;
+    followers: string[]; // lista de strings
+    following: string[];
+    favorite_genres: string[];
+    created_at: string;
+    avatar_url?: string;
+}
