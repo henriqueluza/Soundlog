@@ -7,7 +7,6 @@ export async function register(username : string, email: string, password: strin
 
 export async function login(username : string, password: string) {
     const response = await api.post('/auth/login', { username, password })
-    localStorage.setItem('token', response.data.access_token) // manda dados de login pro backend salva token no formato key:value dentro do localStorage
     return response.data
 }
 
