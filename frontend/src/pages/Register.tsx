@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { register } from '../services/auth'
+import { register} from "../services/auth.ts";
 
 export default function Register() {
     const [username, setUsername] = useState('')
