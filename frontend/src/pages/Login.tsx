@@ -1,17 +1,18 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { login } from '../services/auth'
+import { useNavigate} from 'react-router-dom'
+import { useAuth } from '../contexts/AuthContext.tsx'
 
 export default function Login() {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [error, setError] = useState('')
     const navigate = useNavigate()
+    const {handleLogin} = useAuth()
 
     async function handleSubmit() {
         setError('')
         try {
-            await login(username, password)
+            await handleLogin({username, password});
             navigate('/home')
         } catch {
             setError('Credenciais inválidas. Tente novamente.')
