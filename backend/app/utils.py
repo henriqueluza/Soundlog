@@ -38,7 +38,6 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
     return username
 
 def set_auth_cookie(response: Response, token: str):
-
      return response.set_cookie(
         key="access_token",
         value=token,
