@@ -10,6 +10,6 @@ export async function login(username : string, password: string) {
     return response.data
 }
 
-export function logout() {
-    localStorage.removeItem('token') // remove o token do localStorage, fazendo logout no usuário
+export async function logout() {
+    await api.post("/auth/logout") // remove o token do localStorage, fazendo logout no usuário
 }
