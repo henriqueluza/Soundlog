@@ -1,7 +1,7 @@
-from fastapi import APIRouter, HTTPException, Response
+from fastapi import APIRouter, HTTPException, Response, Depends
 from app.models.user import UserResponse, UserCreate, UserInDB
 from app.db.mongodb import db
-from app.utils import hash_password, set_auth_cookie
+from app.utils import hash_password, set_auth_cookie, get_current_user
 from datetime import datetime
 from app.models.token import TokenResponse
 from app.utils import create_access_token, verify_password
@@ -70,4 +70,6 @@ def logout(response: Response):
     return {"message": "Logout realizado!"}
 
 @router.get("/me")
-async def me(response: Response):
+async def me(current_user = Depends(get_current_user)):
+
+    return current_user
