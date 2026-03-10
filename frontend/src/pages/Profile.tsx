@@ -17,7 +17,7 @@ export default function Profile() {
     const isOwnProfile = user?.username === username
 
     useEffect(() => {
-        api.get(`/${username}/profile`).then((response) => {
+        api.get(`/users/${username}/profile`).then((response) => {
             setProfile(response.data)
         }).catch(() => {
             setProfile(null)
