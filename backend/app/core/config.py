@@ -4,7 +4,7 @@ from pathlib import Path
 class Settings(BaseSettings):
     SECRET_KEY: str
     ALGORITHM: str = 'HS256'
-    ACCESS_TOKEN_EXPIRES: int = 7
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = 7
 
     MONGO_URL: str
     MONGO_DB_NAME: str = 'soundlog'
@@ -16,6 +16,9 @@ class Settings(BaseSettings):
     # Spotify API
     SPOTIFY_CLIENT_ID: str
     SPOTIFY_CLIENT_SECRET: str
+
+    APP_ENV : str
+    DEBUG : str
 
     model_config = {
         'env_file': Path(__file__).resolve().parents[3] / '.env',
