@@ -1,8 +1,12 @@
 from app.db.mongodb import get_db
 
-async def find_by_username(username: str): # verifica se já existe user com o mesmo username na hora de register
+async def find_by_username(username: str):
     db = get_db()
     return await db["users"].find_one({"username": username})
+
+async def find_by_email(email: str):
+    db = get_db()
+    return await db["users"].find_one({"email": email})
 
 async def find_by_email_or_username(login: str):
     db = get_db()
